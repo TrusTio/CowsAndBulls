@@ -7,6 +7,7 @@ class GameMethods {
     }
 
     static int checkBull(int secretNumbers[], String inputNumbers) {
+
         int bullCounter = 0;
         if (Character.getNumericValue(inputNumbers.charAt(0)) == secretNumbers[0]) {
             ++bullCounter;
@@ -47,8 +48,8 @@ class GameMethods {
     }
 
 
-    static int[] numberGen(){
-        int[] secretNumber= new int[4];
+    static int[] numberGen() {
+        int[] secretNumber = new int[4];
         secretNumber[0] = GameMethods.randomNumberInRange(1, 9);
         do {
             secretNumber[1] = GameMethods.randomNumberInRange(0, 9);
