@@ -12,6 +12,7 @@ public class Game extends JFrame implements ActionListener {
     int countTimes;
     private Image bg= getToolkit().getImage(Game.class.getResource("Background1.png"));
     private Image icon=getToolkit().getImage(Game.class.getResource("gameIcon.png"));
+    //TODO find better bg image
     private BackgroundPanel homePanel1= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
     private BackgroundPanel homePanel= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
     private BackgroundPanel gamePanel= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
@@ -140,7 +141,7 @@ public class Game extends JFrame implements ActionListener {
                             + secretNumber[0] + secretNumber[1] + secretNumber[2] + secretNumber[3] + "!");
                     cl.show(panelContainer, "Home");
                 } else {
-                    result.setText("bulls:" + bulls + "\n cows: " + cows);
+                    result.setText("bulls:" + bulls + "\n cows: " + cows); //TODO change it from numbers to pics of cows and bulls
                 }
                 previousResults.setText(previousResults.getText() + "\n" + inputField.getText() + " == bulls:" + bulls + " | cows: " + cows);
                 inputField.setText("");
