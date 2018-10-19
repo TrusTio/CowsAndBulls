@@ -211,7 +211,7 @@ public class Game extends JFrame implements ActionListener {
         instructionsPanel.add(instrLabel);
         panelContainer.add(instructionsPanel,"Instructions");
 
-        /* High Score Panel */
+        /*High Score Panel */
         highScorePanel.setLayout(null);
         highScorePanel.setSize(500, 500);
         highScorePanel.setVisible(true);
