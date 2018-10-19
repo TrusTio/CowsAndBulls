@@ -9,7 +9,7 @@ public class Game extends JFrame implements ActionListener {
     private CardLayout cl;
     private JButton buttonNewGame, buttonInstructions,buttonHistory,buttonHighScore, buttonExit, buttonBack, buttonBack_2, buttonBack_3, buttonBack_4;
     private JTextField inputField;
-    private JTextArea previousResults,gameInstructions;
+    private JTextArea previousResults,gameInstructions, historyResults;
     private int[] secretNumber;
     private int countTimes;
     private Border brownBorder = BorderFactory.createLineBorder(new Color(128,82,7), 4);
@@ -37,7 +37,6 @@ public class Game extends JFrame implements ActionListener {
         //TODO add history for current game session
         //TODO add high score tracker with name to be put on every high score
         //TODO change the way buttons look
-        //TODO add instructions(to type the number and press enter
         /* Home Panel */
         buttonNewGame = new JButton("New Game");
         buttonNewGame.setBounds(190,20,140,40);
@@ -242,7 +241,18 @@ public class Game extends JFrame implements ActionListener {
         buttonBack_4.setVisible(true);
         buttonBack_4.addActionListener(this);
 
+        historyResults= new JTextArea();
+        historyResults.setEditable(false);
+        historyResults.setForeground(new Color(128,82,7));
+        historyResults.setFont(new Font("SansSerif", Font.BOLD, 13));
+        JScrollPane scroll_2 = new JScrollPane(historyResults);
+        scroll_2.setBorder(null);
+        scroll_2.setBounds(10, 0, 370, 200);
+        scroll_2.setVisible(true);
+        scroll_2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
         historyPanel.add(buttonBack_4);
+        historyPanel.add(scroll_2);
         panelContainer.add(historyPanel,"History");
 
         this.add(panelContainer);
@@ -309,6 +319,8 @@ public class Game extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(gamePanel, "You guessed it right from "+countTimes+" times! The number was "
                             + secretNumber[0] + secretNumber[1] + secretNumber[2] + secretNumber[3] + "!");
                     cl.show(panelContainer, "Home");
+                    historyResults.setText("You guessed it right from "+countTimes+" times! The number was "
+                            + secretNumber[0] + secretNumber[1] + secretNumber[2] + secretNumber[3] + "!\n" +historyResults.getText());
                 } else {
                     GameMethods.resetLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4);
                     GameMethods.changeLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4,bulls);
