@@ -7,9 +7,9 @@ import javax.swing.border.Border;
 public class Game extends JFrame implements ActionListener {
     private JPanel panelContainer;
     private CardLayout cl;
-    private JButton buttonNewGame, buttonExit, buttonBack;
+    private JButton buttonNewGame, buttonInstructions,buttonHistory,buttonHighScore, buttonExit, buttonBack, buttonBack_2, buttonBack_3, buttonBack_4;
     private JTextField inputField;
-    private JTextArea previousResults;
+    private JTextArea previousResults,gameInstructions;
     private int[] secretNumber;
     private int countTimes;
     private Border brownBorder = BorderFactory.createLineBorder(new Color(128,82,7), 4);
@@ -17,6 +17,10 @@ public class Game extends JFrame implements ActionListener {
     private Image icon=getToolkit().getImage(Game.class.getResource("gameIcon.png"));
     private BackgroundPanel homePanel= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
     private BackgroundPanel gamePanel= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
+    private BackgroundPanel instructionsPanel = new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
+    private BackgroundPanel historyPanel= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
+    private BackgroundPanel highScorePanel = new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
+
     private JLabel cowLabel_1 = new JLabel(new ImageIcon(Game.class.getResource("cow.png")));
     private JLabel cowLabel_2 = new JLabel(new ImageIcon(Game.class.getResource("cow.png")));
     private JLabel cowLabel_3 = new JLabel(new ImageIcon(Game.class.getResource("cow.png")));
@@ -27,22 +31,51 @@ public class Game extends JFrame implements ActionListener {
     private JLabel bullLabel_4 = new JLabel(new ImageIcon(Game.class.getResource("bull.png")));
 
     Game(){
+        //TODO add history for current game session
+        //TODO add high score tracker with name to be put on every high score
+        //TODO change the way buttons look
+        //TODO add instructions(to type the number and press enter
         /* Home Panel */
         buttonNewGame = new JButton("New Game");
-        buttonNewGame.setLocation(190, 50);
+        buttonNewGame.setBounds(190,20,140,40);
         buttonNewGame.setFont(new Font("SansSerif", Font.BOLD, 18));
         buttonNewGame.setHorizontalAlignment(SwingConstants.CENTER);
         buttonNewGame.setContentAreaFilled(false);
-        buttonNewGame.setSize(140, 40);
         buttonNewGame.setBorder(brownBorder);
         buttonNewGame.setVisible(true);
         buttonNewGame.addActionListener(this);
 
+        buttonInstructions = new JButton("Instructions");
+        buttonInstructions.setBounds(190,70,140,40);
+        buttonInstructions.setFont(new Font("SansSerif",Font.BOLD, 18));
+        buttonInstructions.setHorizontalAlignment(SwingConstants.CENTER);
+        buttonInstructions.setContentAreaFilled(false);
+        buttonInstructions.setBorder(brownBorder);
+        buttonInstructions.setVisible(true);
+        buttonInstructions.addActionListener(this);
+
+        buttonHighScore= new JButton("High Score");
+        buttonHighScore.setBounds(190,120,140,40);
+        buttonHighScore.setFont(new Font("SansSerif",Font.BOLD, 18));
+        buttonHighScore.setHorizontalAlignment(SwingConstants.CENTER);
+        buttonHighScore.setContentAreaFilled(false);
+        buttonHighScore.setBorder(brownBorder);
+        buttonHighScore.setVisible(true);
+        buttonHighScore.addActionListener(this);
+
+        buttonHistory= new JButton("History");
+        buttonHistory.setBounds(190,170,140,40);
+        buttonHistory.setFont(new Font("SansSerif",Font.BOLD, 18));
+        buttonHistory.setHorizontalAlignment(SwingConstants.CENTER);
+        buttonHistory.setContentAreaFilled(false);
+        buttonHistory.setBorder(brownBorder);
+        buttonHistory.setVisible(true);
+        buttonHistory.addActionListener(this);
+
         buttonExit = new JButton("Exit");
-        buttonExit.setLocation(190, 100);
+        buttonExit.setBounds(190,220,140,40);
         buttonExit.setFont(new Font("SansSerif", Font.BOLD, 18));
         buttonExit.setContentAreaFilled(false);
-        buttonExit.setSize(140, 40);
         buttonExit.setBorder(brownBorder);
         buttonExit.setVisible(true);
         buttonExit.addActionListener(this);
@@ -53,6 +86,9 @@ public class Game extends JFrame implements ActionListener {
 
         homePanel.setLayout(null);
         homePanel.add(buttonNewGame);
+        homePanel.add(buttonInstructions);
+        homePanel.add(buttonHighScore);
+        homePanel.add(buttonHistory);
         homePanel.add(buttonExit);
         homePanel.setSize(500, 500);
         homePanel.setVisible(true);
@@ -124,6 +160,79 @@ public class Game extends JFrame implements ActionListener {
         gamePanel.setVisible(true);
         panelContainer.add(gamePanel, "Game");
 
+        /* Instruction Panel */
+        instructionsPanel.setLayout(null);
+        instructionsPanel.setSize(500, 500);
+        instructionsPanel.setVisible(true);
+
+        buttonBack_2= new JButton("Back");
+        buttonBack_2.setForeground(Color.BLACK);
+        buttonBack_2.setContentAreaFilled(false);
+        buttonBack_2.setFont(new Font("SansSerif", Font.BOLD, 20));
+        buttonBack_2.setBounds(392,3,100,30);
+        buttonBack_2.setBorder(brownBorder);
+        buttonBack_2.setVisible(true);
+        buttonBack_2.addActionListener(this);
+
+        JLabel instrLabel= new JLabel("INSTRUCTIONS");
+        instrLabel.setBounds(140,-6,150,50);
+        instrLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        instrLabel.setForeground(new Color(128,82,7));
+        instrLabel.setVisible(true);
+        gameInstructions = new JTextArea(
+                "\n The number of Bulls - correct digits in the right position." +
+                "\n The number of Cows - correct digits but in the wrong position." +
+                "\n For example if the correct number is 2745:" +
+                "\n Your guess: 1389 - 0 Bulls, 0 Cows." +
+                "\n Your guess: 1234 - 0 Bulls, 2 Cows." +
+                "\n Your guess: 1785 - 2 Bulls, 0 Cows." +
+                "\n Your guess: 2745 - 4 Bulls!");
+        gameInstructions.setEditable(false);
+        gameInstructions.setForeground(new Color(128,82,7));
+        gameInstructions.setFont(new Font("SansSerif", Font.BOLD, 16));
+        gameInstructions.setVisible(true);
+        gameInstructions.setBounds(10,30,470,470);
+
+
+        instructionsPanel.add(buttonBack_2);
+        instructionsPanel.add(gameInstructions);
+        instructionsPanel.add(instrLabel);
+        panelContainer.add(instructionsPanel,"Instructions");
+
+        /*High Score Panel */
+        highScorePanel.setLayout(null);
+        highScorePanel.setSize(500, 500);
+        highScorePanel.setVisible(true);
+
+        buttonBack_3= new JButton("Back");
+        buttonBack_3.setForeground(Color.BLACK);
+        buttonBack_3.setContentAreaFilled(false);
+        buttonBack_3.setFont(new Font("SansSerif", Font.BOLD, 20));
+        buttonBack_3.setBounds(392,3,100,30);
+        buttonBack_3.setBorder(brownBorder);
+        buttonBack_3.setVisible(true);
+        buttonBack_3.addActionListener(this);
+
+        highScorePanel.add(buttonBack_3);
+        panelContainer.add(highScorePanel,"HighScore");
+
+        /* History Panel */
+        historyPanel.setLayout(null);
+        historyPanel.setSize(500, 500);
+        historyPanel.setVisible(true);
+
+        buttonBack_4= new JButton("Back");
+        buttonBack_4.setForeground(Color.BLACK);
+        buttonBack_4.setContentAreaFilled(false);
+        buttonBack_4.setFont(new Font("SansSerif", Font.BOLD, 20));
+        buttonBack_4.setBounds(392,3,100,30);
+        buttonBack_4.setBorder(brownBorder);
+        buttonBack_4.setVisible(true);
+        buttonBack_4.addActionListener(this);
+
+        historyPanel.add(buttonBack_4);
+        panelContainer.add(historyPanel,"History");
+
         this.add(panelContainer);
         cl.show(panelContainer,"Home1");
         cl.show(panelContainer, "Home");
@@ -148,12 +257,26 @@ public class Game extends JFrame implements ActionListener {
             countTimes=0;
         }
 
-        if (e.getSource() == buttonExit) {
+        if(e.getSource()==buttonInstructions){
+            cl.show(panelContainer, "Instructions");
+        }
+
+        if(e.getSource()==buttonHighScore){
+            cl.show(panelContainer, "HighScore");
+        }
+
+        if(e.getSource()==buttonHistory){
+            cl.show(panelContainer,"History");
+        }
+
+        if (e.getSource() == buttonExit ) {
             System.exit(0);
         }
-        if(e.getSource()==buttonBack){
+
+        if(e.getSource()==buttonBack || e.getSource()==buttonBack_2 || e.getSource()==buttonBack_3 || e.getSource()==buttonBack_4){
             cl.show(panelContainer, "Home");
         }
+
     }
 
     private Action action = new AbstractAction() {
