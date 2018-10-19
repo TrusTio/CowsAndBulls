@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Random;
 
 class GameMethods {
@@ -64,5 +65,29 @@ class GameMethods {
                 || secretNumber[3] == secretNumber[1]
                 || secretNumber[3] == secretNumber[2]);
         return secretNumber;
+    }
+
+    static void changeLabelVis(JLabel c1,JLabel c2, JLabel c3, JLabel c4, int number){
+        switch(number){
+            case 1:{
+                c1.setVisible(true);
+                break;
+            }
+            case 2: {
+                c1.setVisible(true); c2.setVisible(true);
+                break;
+            }
+            case 3: {
+                c1.setVisible(true); c2.setVisible(true); c3.setVisible(true);
+                break;
+            }
+            case 4: {
+                c1.setVisible(true); c2.setVisible(true); c3.setVisible(true); c4.setVisible(true);
+            }
+        }
+    }
+
+    static void resetLabelVis(JLabel c1,JLabel c2, JLabel c3, JLabel c4){
+        c1.setVisible(false); c2.setVisible(false); c3.setVisible(false); c4.setVisible(false);
     }
 }

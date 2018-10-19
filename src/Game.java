@@ -9,15 +9,22 @@ public class Game extends JFrame implements ActionListener {
     private CardLayout cl;
     private JButton buttonNewGame, buttonExit, buttonBack;
     private JTextField inputField;
-    private JTextArea result, previousResults;
+    private JTextArea previousResults;
     private int[] secretNumber;
-    int countTimes;
+    private int countTimes;
     private Border brownBorder = BorderFactory.createLineBorder(new Color(128,82,7), 4);
     private Image bg= getToolkit().getImage(Game.class.getResource("Background.jpg"));
     private Image icon=getToolkit().getImage(Game.class.getResource("gameIcon.png"));
-    private BackgroundPanel homePanel1= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
     private BackgroundPanel homePanel= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
     private BackgroundPanel gamePanel= new BackgroundPanel(bg, BackgroundPanel.SCALED,0.0f,0.0f);
+    private JLabel cowLabel_1 = new JLabel(new ImageIcon(Game.class.getResource("cow.png")));
+    private JLabel cowLabel_2 = new JLabel(new ImageIcon(Game.class.getResource("cow.png")));
+    private JLabel cowLabel_3 = new JLabel(new ImageIcon(Game.class.getResource("cow.png")));
+    private JLabel cowLabel_4 = new JLabel(new ImageIcon(Game.class.getResource("cow.png")));
+    private JLabel bullLabel_1 = new JLabel(new ImageIcon(Game.class.getResource("bull.png")));
+    private JLabel bullLabel_2 = new JLabel(new ImageIcon(Game.class.getResource("bull.png")));
+    private JLabel bullLabel_3 = new JLabel(new ImageIcon(Game.class.getResource("bull.png")));
+    private JLabel bullLabel_4 = new JLabel(new ImageIcon(Game.class.getResource("bull.png")));
 
     Game(){
         /* Home Panel */
@@ -62,12 +69,6 @@ public class Game extends JFrame implements ActionListener {
         inputField.setBorder(brownBorder);
         inputField.addActionListener(action);
 
-        result = new JTextArea(" bulls: 0\n cows: 0");
-        result.setFont(new Font("SansSerif", Font.BOLD, 30));
-        result.setBounds(250, 50, 150, 100);
-        result.setEditable(false);
-        result.setVisible(true);
-
         previousResults = new JTextArea();
         previousResults.setEditable(false);
         previousResults.setForeground(new Color(128,82,7));
@@ -82,19 +83,45 @@ public class Game extends JFrame implements ActionListener {
         buttonBack.setForeground(Color.BLACK);
         buttonBack.setContentAreaFilled(false);
         buttonBack.setFont(new Font("SansSerif", Font.BOLD, 20));
-        buttonBack.setBounds(390,5,100,50);
+        buttonBack.setBounds(392,3,100,30);
         buttonBack.setBorder(brownBorder);
         buttonBack.setVisible(true);
         buttonBack.addActionListener(this);
+
+        /* Cow Labels */
+        cowLabel_1.setBounds(325, 90,50,60);
+        cowLabel_1.setVisible(false);
+        cowLabel_2.setBounds(365, 90,50,60);
+        cowLabel_2.setVisible(false);
+        cowLabel_3.setBounds(405, 90,50,60);
+        cowLabel_3.setVisible(false);
+        cowLabel_4.setBounds(445, 90,50,60);
+        cowLabel_4.setVisible(false);
+
+        /* Bull Labels */
+        bullLabel_1.setBounds(325, 25,50,65);
+        bullLabel_1.setVisible(false);
+        bullLabel_2.setBounds(365, 25,50,65);
+        bullLabel_2.setVisible(false);
+        bullLabel_3.setBounds(405, 25,50,65);
+        bullLabel_3.setVisible(false);
+        bullLabel_4.setBounds(445, 25,50,65);
+        bullLabel_4.setVisible(false);
 
         gamePanel.setLayout(null);
         gamePanel.setSize(500, 500);
         gamePanel.add(inputField);
         gamePanel.add(buttonBack);
-        gamePanel.add(result);
+        gamePanel.add(cowLabel_1);
+        gamePanel.add(cowLabel_2);
+        gamePanel.add(cowLabel_3);
+        gamePanel.add(cowLabel_4);
+        gamePanel.add(bullLabel_1);
+        gamePanel.add(bullLabel_2);
+        gamePanel.add(bullLabel_3);
+        gamePanel.add(bullLabel_4);
         gamePanel.add(scroll);
         gamePanel.setVisible(true);
-
         panelContainer.add(gamePanel, "Game");
 
         this.add(panelContainer);
@@ -113,6 +140,8 @@ public class Game extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == buttonNewGame) {
+            GameMethods.resetLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4);
+            GameMethods.resetLabelVis(cowLabel_1,cowLabel_2,cowLabel_3,cowLabel_4);
             cl.show(panelContainer, "Game");
             secretNumber = GameMethods.numberGen();
             previousResults.setText("");
@@ -136,11 +165,15 @@ public class Game extends JFrame implements ActionListener {
                 int bulls = GameMethods.checkBull(secretNumber, inputField.getText());
                 int cows = GameMethods.checkCow(secretNumber, inputField.getText());
                 if (bulls == 4) {
+                    GameMethods.changeLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4,bulls);
                     JOptionPane.showMessageDialog(gamePanel, "You guessed it right from "+countTimes+" times! The number was "
                             + secretNumber[0] + secretNumber[1] + secretNumber[2] + secretNumber[3] + "!");
                     cl.show(panelContainer, "Home");
                 } else {
-                    result.setText("Bulls: " + bulls + "\n Cows: " + cows); //TODO change it from numbers to pics of cows and bulls
+                    GameMethods.resetLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4);
+                    GameMethods.changeLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4,bulls);
+                    GameMethods.resetLabelVis(cowLabel_1,cowLabel_2,cowLabel_3,cowLabel_4);
+                    GameMethods.changeLabelVis(cowLabel_1,cowLabel_2,cowLabel_3,cowLabel_4,cows);
                 }
                 previousResults.setText(previousResults.getText() + "\n" + inputField.getText() + " == Bulls: " + bulls + " | Cows: " + cows);
                 inputField.setText("");
