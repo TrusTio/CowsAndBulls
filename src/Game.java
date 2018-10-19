@@ -29,6 +29,9 @@ public class Game extends JFrame implements ActionListener {
     private JLabel bullLabel_2 = new JLabel(new ImageIcon(Game.class.getResource("bull.png")));
     private JLabel bullLabel_3 = new JLabel(new ImageIcon(Game.class.getResource("bull.png")));
     private JLabel bullLabel_4 = new JLabel(new ImageIcon(Game.class.getResource("bull.png")));
+    private JLabel bubbleInstructions = new JLabel(new ImageIcon(Game.class.getResource("bubble.png")));
+    private JLabel bubbleInstructionsText = new JLabel("<html> <div style='text-align: center;'>Type your<br>number here</html>");
+
 
     Game(){
         //TODO add history for current game session
@@ -144,6 +147,13 @@ public class Game extends JFrame implements ActionListener {
         bullLabel_4.setBounds(445, 25,50,65);
         bullLabel_4.setVisible(false);
 
+        bubbleInstructions.setBounds(10,270,135,150);
+        bubbleInstructions.setVisible(true);
+        bubbleInstructionsText.setBounds(30,270,100,100);
+        bubbleInstructionsText.setForeground(new Color(128,82,7));
+        bubbleInstructionsText.setFont(new Font("SansSerif", Font.BOLD, 15));
+        bubbleInstructionsText.setVisible(true);
+
         gamePanel.setLayout(null);
         gamePanel.setSize(500, 500);
         gamePanel.add(inputField);
@@ -156,6 +166,8 @@ public class Game extends JFrame implements ActionListener {
         gamePanel.add(bullLabel_2);
         gamePanel.add(bullLabel_3);
         gamePanel.add(bullLabel_4);
+        gamePanel.add(bubbleInstructionsText);
+        gamePanel.add(bubbleInstructions);
         gamePanel.add(scroll);
         gamePanel.setVisible(true);
         panelContainer.add(gamePanel, "Game");
@@ -255,6 +267,9 @@ public class Game extends JFrame implements ActionListener {
             secretNumber = GameMethods.numberGen();
             previousResults.setText("");
             countTimes=0;
+            bubbleInstructions.setVisible(true);
+            bubbleInstructionsText.setVisible(true);
+            inputField.setText("");
         }
 
         if(e.getSource()==buttonInstructions){
@@ -284,6 +299,8 @@ public class Game extends JFrame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             boolean isNumeric = inputField.getText().chars().allMatch( Character::isDigit );
             if (inputField.getText().length() == 4 && isNumeric) {
+                bubbleInstructions.setVisible(false);
+                bubbleInstructionsText.setVisible(false);
                 countTimes++;
                 int bulls = GameMethods.checkBull(secretNumber, inputField.getText());
                 int cows = GameMethods.checkCow(secretNumber, inputField.getText());
