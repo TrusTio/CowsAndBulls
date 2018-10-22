@@ -1,4 +1,7 @@
 import javax.swing.*;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 class GameMethods {
@@ -90,4 +93,72 @@ class GameMethods {
     static void resetLabelVis(JLabel c1,JLabel c2, JLabel c3, JLabel c4){
         c1.setVisible(false); c2.setVisible(false); c3.setVisible(false); c4.setVisible(false);
     }
+
+    static boolean checkHS(int highScore){
+        File file = new File("src\\Highscore.txt");
+        if (!file.exists()) {
+            return true;
+        }
+        else{
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("src\\Highscore.txt"));
+                String line = reader.readLine();
+                if (highScore <= Integer.parseInt( line.substring(line.lastIndexOf("]")+1,line.indexOf("(")) )){
+                    return true;
+                }
+                return false;
+            }catch (IOException ex){
+                System.err.println("ERROR reading scores from file");
+            }
+        }
+        return false;
+    }
+
+    static void highScoreWriter(int highScore,String name){
+        try {
+            File file = new File("src\\Highscore.txt");
+            if (!file.exists()) {
+                file.createNewFile();
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+                String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+                bw.write("["+name+"]"+highScore+"("+timeStamp+")");
+                bw.close();
+            }
+            else{
+                BufferedReader reader = new BufferedReader(new FileReader("src\\Highscore.txt"));
+                String line = reader.readLine();
+                if (highScore <= Integer.parseInt( line.substring(line.lastIndexOf("]")+1,line.indexOf("(")) )){
+                    PrintWriter writer = new PrintWriter("src\\Highscore.txt", "UTF-8");
+                    String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+                    writer.println("["+name+"]"+highScore+"("+timeStamp+")");
+                    writer.close();
+                }
+                reader.close();
+            }
+        } catch (IOException ex) {
+            System.err.println("ERROR reading scores from file");
+        }
+    }
+
+    static String returnHs(){
+        try {
+            File file = new File("src\\Highscore.txt");
+            if (!file.exists()) {
+                return "No high scores yet!";
+            } else {
+                BufferedReader reader = new BufferedReader(new FileReader("src\\Highscore.txt"));
+                String line = reader.readLine();
+                String fixedLine= line.substring(1, line.lastIndexOf("]")) +": "
+                        +line.substring(line.lastIndexOf("]")+1,line.indexOf("(")) + "\n"
+                        +line.substring(line.indexOf("("));
+                return fixedLine;
+            }
+        } catch(IOException ex) {
+            System.err.println("ERROR reading scores from file");
+        }
+        return "No high scores yet! ";
+    }
+
 }
+

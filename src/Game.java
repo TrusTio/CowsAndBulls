@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import javax.swing.*;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
@@ -8,9 +9,10 @@ public class Game extends JFrame{
     private JPanel panelContainer;
     private CardLayout cl;
     private JTextField inputField;
-    private JTextArea previousResults, gameInstructions, historyResults;
+    private JTextArea previousResults, gameInstructions, historyResults,hs;
     private int[] secretNumber;
     private int countTimes;
+    File hsfile= new File("src/Highscore.txt");
     private Border brownBorder = BorderFactory.createLineBorder(new Color(128, 82, 7), 4);
     private Image bg = getToolkit().getImage(Game.class.getResource("Background.jpg"));
     private Image icon = getToolkit().getImage(Game.class.getResource("gameIcon.png"));
@@ -43,9 +45,6 @@ public class Game extends JFrame{
 
 
     Game() {
-        //TODO add history for current game session
-        //TODO add high score tracker with name to be put on every high score
-        //TODO change the way buttons look
         /* Home Panel */
 
         buttonNewGame.setBounds(190, 20, 140, 60);
@@ -228,6 +227,14 @@ public class Game extends JFrame{
         highScorePanel.setSize(500, 500);
         highScorePanel.setVisible(true);
 
+        hs= new JTextArea();
+        hs.setBounds(150,30,300,300);
+        hs.setText(GameMethods.returnHs());
+        hs.setForeground(new Color(128, 82, 7));
+        hs.setFont(new Font("SansSerif", Font.BOLD, 20));
+        hs.setEditable(false);
+        hs.setVisible(true);
+
         buttonBack_3.setBounds(405, -5, 100, 50);
         buttonBack_3.setVisible(true);
         buttonBack_3.addMouseListener(new MouseAdapter() {
@@ -237,6 +244,7 @@ public class Game extends JFrame{
         });
 
         highScorePanel.add(buttonBack_3);
+        highScorePanel.add(hs);
         panelContainer.add(highScorePanel, "HighScore");
 
         /* History Panel */
@@ -292,11 +300,22 @@ public class Game extends JFrame{
                 int cows = GameMethods.checkCow(secretNumber, inputField.getText());
                 if (bulls == 4) {
                     GameMethods.changeLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4,bulls);
-                    JOptionPane.showMessageDialog(gamePanel, "You guessed it right from "+countTimes+" times! The number was "
-                            + secretNumber[0] + secretNumber[1] + secretNumber[2] + secretNumber[3] + "!");
-                    cl.show(panelContainer, "Home");
+                    if(GameMethods.checkHS(countTimes)){
+                        String name = JOptionPane.showInputDialog("You got a high score! Type in your name:");
+                        if(name.length()!=0){
+                            GameMethods.highScoreWriter(countTimes,name);
+                            cl.show(panelContainer, "Home");
+                            hs.setText(GameMethods.returnHs());
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(gamePanel, "You guessed it right from " + countTimes + " times! The number was "
+                                + secretNumber[0] + secretNumber[1] + secretNumber[2] + secretNumber[3] + "!");
+                        cl.show(panelContainer, "Home");
+                    }
                     historyResults.setText("You guessed it right from "+countTimes+" times! The number was "
                             + secretNumber[0] + secretNumber[1] + secretNumber[2] + secretNumber[3] + "!\n" +historyResults.getText());
+
                 } else {
                     GameMethods.resetLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4);
                     GameMethods.changeLabelVis(bullLabel_1,bullLabel_2,bullLabel_3,bullLabel_4,bulls);
