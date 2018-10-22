@@ -160,5 +160,11 @@ class GameMethods {
         return "No high scores yet! ";
     }
 
+    static void resetHs(){
+            File file = new File("src\\Highscore.txt");
+            if(file.delete()){
+                System.out.println("Deleted successfully.");
+            };
+    }
 }
 

@@ -27,6 +27,7 @@ public class Game extends JFrame{
     private JLabel buttonHighScore = new JLabel(new ImageIcon(Game.class.getResource("buttonHighScore.png")));
     private JLabel buttonHistory = new JLabel(new ImageIcon(Game.class.getResource("buttonHistory.png")));
     private JLabel buttonExit = new JLabel(new ImageIcon(Game.class.getResource("buttonExit.png")));
+    private JLabel resetButton = new JLabel(new ImageIcon(Game.class.getResource("resetButton.png")));
     private JLabel buttonBack_1 = new JLabel(new ImageIcon(Game.class.getResource("buttonBack.png")));
     private JLabel buttonBack_2 = new JLabel(new ImageIcon(Game.class.getResource("buttonBack.png")));
     private JLabel buttonBack_3 = new JLabel(new ImageIcon(Game.class.getResource("buttonBack.png")));
@@ -235,6 +236,7 @@ public class Game extends JFrame{
         hs.setEditable(false);
         hs.setVisible(true);
 
+
         buttonBack_3.setBounds(405, -5, 100, 50);
         buttonBack_3.setVisible(true);
         buttonBack_3.addMouseListener(new MouseAdapter() {
@@ -243,8 +245,22 @@ public class Game extends JFrame{
             }
         });
 
+        resetButton.setBounds(370, 405, 130, 80);
+        resetButton.setVisible(true);
+        resetButton.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to reset the score?");
+                if(input==0){
+                    GameMethods.resetHs();
+                    JOptionPane.showMessageDialog(highScorePanel,"Score reset successfully");
+                    hs.setText(GameMethods.returnHs());
+                }
+            }
+        });
+
         highScorePanel.add(buttonBack_3);
         highScorePanel.add(hs);
+        highScorePanel.add(resetButton);
         panelContainer.add(highScorePanel, "HighScore");
 
         /* History Panel */
